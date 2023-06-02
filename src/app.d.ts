@@ -4,10 +4,10 @@
 // for information about these interfaces
 declare global {
   namespace App {
-    // interface Error {}       // omment for skeleton framework
-    // interface Locals {}      // omment for skeleton framework
-    // interface PageData {}    // omment for skeleton framework
-    // interface Platform {}    // omment for skeleton framework
+    // interface Error {}       // comment for skeleton framework
+    // interface Locals {}      // comment for skeleton framework
+    // interface PageData {}    // comment for skeleton framework
+    // interface Platform {}    // comment for skeleton framework
   }
 }
 
