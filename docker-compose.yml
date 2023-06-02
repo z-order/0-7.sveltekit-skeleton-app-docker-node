@@ -1,0 +1,10 @@
+name: my-sveltekit-skeleton-project
+services:
+  sveltekit:
+    image: sveltekit-skeleton-app-node
+    ports:
+      - 3000:3000
+    working_dir: /app
+    command: [ node, '-r', 'dotenv/config', './entry.server.js' ]
+    environment:
+      - MY_ENV_HERE=foo
