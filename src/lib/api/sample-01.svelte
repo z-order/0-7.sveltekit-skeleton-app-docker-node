@@ -37,15 +37,10 @@
   </form>
   <span
     ><h1>
-      API Response {sentPacket && !receivedPacket
-        ? '[waiting...]'
-        : '[Please fill up input columns.]'}
+      API Response {sentPacket && !receivedPacket ? '[waiting...]' : '[Please fill up input columns.]'}
     </h1></span
   >
-  <CodeBlock
-    language="json"
-    code={`${resAPI === undefined ? ' API reponse data will be here.' : JSON.stringify(resAPI)}`}
-  />
+  <CodeBlock language="json" code={`${resAPI === undefined ? ' API reponse data will be here.' : JSON.stringify(resAPI)}`} />
 </main>
 
 <style lang="postcss">

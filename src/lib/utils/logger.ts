@@ -9,14 +9,16 @@ enum LogLevel {
   _ERROR = 5,
 }
 
+export type APIAction = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'CONNECT' | 'TRACE';
+
 class SecureLogger {
   // Constructor
   constructor(level: 'debug' | 'trace' | 'info' | 'warn' | 'error') { }
   public TracePromiseSMD(currentRoutePath: string, data: PromiseSMD | undefined) { }
-  public TraceAPIAction(currentRoutePath: string,
-    apiActoin: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'CONNECT' | 'TRACE', arrowActoin: 'C->S' | 'C<-S' | 'C--S', ...data: any) { }
-  public TraceServerLoadData(currentFilePath: string, currentRoutePath: string, loadData: any) { }
-  public TraceLayoutAndPage(currentFilePath: string, currentRoutePath: string | null, data: any) { }
+  public TraceAPIAction(currentRoutePath: string, apiActoin: APIAction, arrowActoin: 'C->S' | 'C<-S' | 'C--S', ...data: any) { }
+  public TraceServerLoadData(currentFilePath: string, currentRoutePath: string, loadData: any, ...moreData: any) { }
+  public TraceFormActions(currentFilePath: string, formActoin: string, data: any, ...moreData: any) { }
+  public TraceLayoutAndPage(currentFilePath: string, currentRoutePath: string | null, data: any, ...moreData: any) { }
 }
 
 class Logger extends SecureLogger {
@@ -141,8 +143,7 @@ class Logger extends SecureLogger {
    * @param data The data from client or return data to the client.
    * @return Nothing is returned.
    */
-  public TraceAPIAction(currentRoutePath: string,
-    apiActoin: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'CONNECT' | 'TRACE', arrowActoin: 'C->S' | 'C<-S' | 'C--S', ...data: any) {
+  public TraceAPIAction(currentRoutePath: string, apiActoin: APIAction, arrowActoin: 'C->S' | 'C<-S' | 'C--S', ...data: any) {
     if (data == null || data == undefined) {
       _$c.__$logger_TraceAPIAction__ && this.displayLog(`API ${arrowActoin}`, `${currentRoutePath} [${apiActoin}]`, '');
     } else {
@@ -159,11 +160,28 @@ class Logger extends SecureLogger {
    * @param loadData The data returned from the load function.
    * @return Nothing is returned.
    */
-  public TraceServerLoadData(currentFilePath: string, currentRoutePath: string, loadData: any) {
+  public TraceServerLoadData(currentFilePath: string, currentRoutePath: string, loadData: any, ...moreData: any) {
     if (loadData == null || loadData == undefined) {
       _$c.__$logger_TraceServerLoadData__ && this.displayLog('LOAD', currentFilePath, `=> route ${currentRoutePath}`);
     } else {
-      _$c.__$logger_TraceServerLoadData__ && this.displayLog('LOAD', currentFilePath, `=> route ${currentRoutePath} => data`, loadData);
+      _$c.__$logger_TraceServerLoadData__ && this.displayLog('LOAD', currentFilePath, `=> route ${currentRoutePath} => data`, loadData, ...moreData);
+    }
+  }
+
+  /**
+   * Logs +layout.server.ts/+page.server.ts data to the console if we are running in development mode (and _$c.__$logger_TraceServerLoadData__ is true)
+   * Ignore if we are running in production mode to the client side.
+   * If we are running in production mode to the server side, logs only info/warn/error level.
+   *
+   * @param currentRoutePath The current path of the route.
+   * @param loadData The data returned from the load function.
+   * @return Nothing is returned.
+   */
+  public TraceFormActions(currentFilePath: string, formActoin: string, data: any, ...moreData: any) {
+    if (data == null || data == undefined) {
+      _$c.__$logger_TraceServerLoadData__ && this.displayLog('FORM', currentFilePath, `=> ${formActoin} action`);
+    } else {
+      _$c.__$logger_TraceServerLoadData__ && this.displayLog('FORM', currentFilePath, `=> ${formActoin} action => formData`, data, ...moreData);
     }
   }
 
@@ -176,8 +194,8 @@ class Logger extends SecureLogger {
    * @param data 'export let data: any' in which exists on the all header part of +layout.svelte or +page.svelte.
    * @return Nothing is returned.
    */
-  public TraceLayoutAndPage(currentFilePath: string, currentRoutePath: string | null, data: any) {
-    _$c.__$logger_TraceLayoutAndPage__ && this.displayLog('SVELTE', currentFilePath, `=> route ${currentRoutePath} => data`, data);
+  public TraceLayoutAndPage(currentFilePath: string, currentRoutePath: string | null, data: any, ...moreData: any) {
+    _$c.__$logger_TraceLayoutAndPage__ && this.displayLog('SVELTE', currentFilePath, `=> route ${currentRoutePath} => data`, data, ...moreData);
   }
 
 } // end of class Logger

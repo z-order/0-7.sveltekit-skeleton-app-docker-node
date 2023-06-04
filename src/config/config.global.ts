@@ -45,6 +45,7 @@ if (import.meta.env.MODE === 'development') {
 export const __DEBUG__ = devMode;
 export const __DEBUG_FETCH__ = __DEBUG__;
 export const __DEBUG_LOAD_DATA__ALL_PARAMS__ = __DEBUG__ && false;
+export const __DEBUG_HOOKS__ = __DEBUG__ && false;
 export const __DEBUG_API__ = __DEBUG__;
 
 // logging options

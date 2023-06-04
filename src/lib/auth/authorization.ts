@@ -72,7 +72,7 @@ export async function getUserAuth(id: string, password: string): Promise<Promise
  * @param sessionid The session id of the user.
  * @return The user session data.
  */
-export function getUserSession(sessionid: string): UserSessionData | undefined {
+export async function getUserSession(sessionid: string): Promise<UserSessionData | undefined> {
   for (let i = 0; i < userSessionData.length; i++) {
     if (userSessionData[i].sessionid === sessionid) {
       return userSessionData[i];
@@ -87,7 +87,7 @@ export function getUserSession(sessionid: string): UserSessionData | undefined {
  * @param sessionid The session id of the user.
  * @return The updated user session data.
  */
-export function createUserSession(uuidUser: string): UserSessionData {
+export async function createUserSession(uuidUser: string): Promise<UserSessionData> {
   let sessionId: string = generateSessionId(uuidUser);
   let userSessionData: UserSessionData = {
     uuid: uuidUser,
@@ -117,7 +117,7 @@ export function createUserSession(uuidUser: string): UserSessionData {
  * @param sessionid The session id of the user.
  * @return The updated user session data.
  */
-export function updateUserSession(sessionid: string, sessionData: UserSessionData): UserSessionData | undefined {
+export async function updateUserSession(sessionid: string, sessionData: UserSessionData): Promise<UserSessionData | undefined> {
   for (let i = 0; i < userSessionData.length; i++) {
     if (userSessionData[i].sessionid === sessionid) {
       userSessionData[i] = sessionData;
@@ -133,7 +133,7 @@ export function updateUserSession(sessionid: string, sessionData: UserSessionDat
  * @param sessionData The new session data.
  * @return The new user session data.
  */
-export function addUserSession(sessionData: UserSessionData): UserSessionData {
+export async function addUserSession(sessionData: UserSessionData): Promise<UserSessionData> {
   userSessionData.push(sessionData);
   return sessionData;
 }
@@ -144,7 +144,7 @@ export function addUserSession(sessionData: UserSessionData): UserSessionData {
  * @param sessionData The session id to be removed.
  * @return An UserSessionData[] array containing the elements that were deleted.
  */
-export function removeUserSession(sessionid: string): UserSessionData[] | undefined {
+export async function removeUserSession(sessionid: string): Promise<UserSessionData[] | undefined> {
   for (let i = 0; i < userSessionData.length; i++) {
     if (userSessionData[i].sessionid === sessionid) {
       return userSessionData.splice(i, 1);

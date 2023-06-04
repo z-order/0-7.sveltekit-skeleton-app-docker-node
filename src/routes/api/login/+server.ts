@@ -40,7 +40,7 @@ export async function POST({ route, params, url, cookies, request }:
     throw error(500, 'Internal Server Error');
   }
 
-  let userSessionData: UserSessionData = _$auth.createUserSession(userAuthData.data.uuid);
+  let userSessionData: UserSessionData = await _$auth.createUserSession(userAuthData.data.uuid);
   let cookieValue = _$auth.createCookieValue(userSessionData);
   _$auth.addUserSession(userSessionData);
 

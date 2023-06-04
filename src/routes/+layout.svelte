@@ -11,8 +11,13 @@
 
 {#if data.userSessionData == undefined}
   <LoginPage />
-{:else}
-  <HomeLayout>
+{:else if data.userSessionData}
+  {#if $page.route.id === '/admin'}
+    <h1>Hi! You are an admin!</h1>
     <slot />
-  </HomeLayout>
+  {:else}
+    <HomeLayout>
+      <slot />
+    </HomeLayout>
+  {/if}
 {/if}
