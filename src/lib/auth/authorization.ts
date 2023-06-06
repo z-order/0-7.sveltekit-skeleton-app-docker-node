@@ -12,7 +12,7 @@ async function initializeUserAuthDB() {
     {
       uuid: uuidv5(uuidv4(), UUID_NAMESPACE),
       id: '1001',
-      password: await hashPassword('epl@@1001'),
+      password: await hashPassword('1001'),
       name: 'John Doe',
       email: '1001@test.com',
       role: 'user',
@@ -21,7 +21,7 @@ async function initializeUserAuthDB() {
     {
       uuid: uuidv5(uuidv4(), UUID_NAMESPACE),
       id: '1002',
-      password: await hashPassword('epl@@1002'),
+      password: await hashPassword('1002'),
       name: 'Jane Doe',
       email: '1002@test.com',
       role: 'user',

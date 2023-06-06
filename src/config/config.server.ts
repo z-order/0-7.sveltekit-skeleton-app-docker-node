@@ -10,14 +10,14 @@ export const __dbUser__ = 'user_id';
 export const __dbPasswd__ = 'user_passwd';
 export const __dbName__ = 'dbname';
 export const __dbServer__ = 'maria';
-export const __dbPort__ = 61433; // default port is 1433
+export const __dbPort__ = 41433; // default port is 1433
 
 // mongodb
 export const __mongoDBUser__ = 'user_id';
 export const __mongoDBPasswd__ = 'user_passwd';
 export const __mongoDBName__ = 'dbname';
 export const __mongoDBServer__ = 'mongodb';
-export const __mongoDBPort__ = 57017; // default port is 27017
+export const __mongoDBPort__ = 37017; // default port is 27017
 
 // refresh intervals
 export const __dbMonitoringDataRefresh_Interval__ = 6000; // milliseconds

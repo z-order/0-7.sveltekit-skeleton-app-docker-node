@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { _$logger } from '$lib/utils/logger';
+import { _$logger, type APIAction } from '$lib/utils/logger';
 import * as _$c from '$config/config.global';
 import * as _$auth from '$lib/auth/authorization';
 import type { PromiseSMD, UserSessionData, APILoginReq, APILoginResp } from '$lib/types';
@@ -7,6 +7,7 @@ import type { PromiseSMD, UserSessionData, APILoginReq, APILoginResp } from '$li
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ route, params, url, cookies, request }:
   { route: any, params: any, url: any, cookies: any, request: any }) {
+  let __APIAction: APIAction = 'POST';
   /* curl for GET method
   curl -i -X POST http://localhost:3000/api/login
   curl -i -d '{"id":"1001", "password":"epl@@1001"}' -X POST http://localhost:5173/api/login
@@ -14,9 +15,9 @@ export async function POST({ route, params, url, cookies, request }:
   const apiReqData: APILoginReq = await request.json();
 
   if (import.meta.env.MODE === 'development') {
-    _$logger.debug.TraceAPIAction(route.id, 'POST', 'C->S', JSON.stringify(apiReqData));
+    _$logger.debug.TraceAPIAction(route.id, __APIAction, 'C->S', JSON.stringify(apiReqData));
   } else {
-    _$logger.info.TraceAPIAction(route.id, 'POST', 'C->S', JSON.stringify(apiReqData.id));
+    _$logger.info.TraceAPIAction(route.id, __APIAction, 'C->S', JSON.stringify(apiReqData.id));
   }
 
   if (apiReqData == undefined || apiReqData.id == undefined || apiReqData.password == undefined) {
@@ -44,8 +45,8 @@ export async function POST({ route, params, url, cookies, request }:
   let cookieValue = _$auth.createCookieValue(userSessionData);
   _$auth.addUserSession(userSessionData);
 
-  _$logger.info.TraceAPIAction(route.id, 'POST', 'C--S', 'userSessionData', JSON.stringify(userSessionData));
-  _$logger.debug.TraceAPIAction(route.id, 'POST', 'C--S', 'cookieValue', cookieValue);
+  _$logger.info.TraceAPIAction(route.id, __APIAction, 'C--S', 'userSessionData', JSON.stringify(userSessionData));
+  _$logger.debug.TraceAPIAction(route.id, __APIAction, 'C--S', 'cookieValue', cookieValue);
 
   let resData: APILoginResp = {
     uuid: userAuthData.data.uuid,
@@ -55,6 +56,6 @@ export async function POST({ route, params, url, cookies, request }:
   };
 
   let res = new Response(JSON.stringify(resData), { headers: { 'set-cookie': cookieValue } });
-  _$logger.info.TraceAPIAction(route.id, 'POST', 'C<-S', res.status, res.statusText, resData);
+  _$logger.info.TraceAPIAction(route.id, __APIAction, 'C<-S', res.status, res.statusText, resData);
   return res;
 }

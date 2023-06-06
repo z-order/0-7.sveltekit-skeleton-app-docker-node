@@ -1,5 +1,5 @@
 import { error, json } from '@sveltejs/kit';
-import { _$logger } from '$lib/utils/logger';
+import { _$logger, type APIAction } from '$lib/utils/logger';
 import * as _$c from '$config/config.global';
 
 /* Content negotiation in SvelteKit:
@@ -14,6 +14,7 @@ import * as _$c from '$config/config.global';
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ route, url, request }: { route: any, url: any, request: any }) {
+  let __APIAction: APIAction = 'POST';
   /* curl for POST method
   curl -i -d "a=1&b=2" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://localhost:3000/api/adder
   curl -i -d '{"a":"1", "b":"2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/api/adder
@@ -23,7 +24,7 @@ export async function POST({ route, url, request }: { route: any, url: any, requ
     => 3
   */
   const { a, b } = await request.json();
-  _$logger.info.TraceAPIAction(route.id, 'GET', 'C<-S', 200, 'OK');
+  _$logger.info.TraceAPIAction(route.id, __APIAction, 'C<-S', 200, 'OK');
   return json(a + b);
 }
 

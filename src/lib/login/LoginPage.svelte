@@ -30,6 +30,7 @@
 </script>
 
 <main>
+  <h1>You can login with id: '1001', Password: '1001'</h1>
   <form>
     <input class="input" type="text" placeholder="ID" bind:value={apiReqData.id} />
     <input class="input" type="password" placeholder="Password" bind:value={apiReqData.password} />
@@ -39,7 +40,7 @@
 
 <style lang="postcss">
   main {
-    @apply h-[100%] flex flex-row gap-8 justify-center items-center;
+    @apply h-[100%] flex flex-col gap-8 justify-center items-center;
   }
   form {
     @apply flex flex-col gap-8 justify-center items-center space-x-1;
