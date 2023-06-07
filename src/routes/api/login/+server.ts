@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { _$logger, type APIAction } from '$lib/utils/logger';
 import * as _$c from '$config/config.global';
 import * as _$auth from '$lib/auth/authorization';
-import type { PromiseSMD, UserSessionData, APILoginReq, APILoginResp } from '$lib/types';
+import type { PromiseSMD, UserSessionData, APILoginReq, APILoginResp } from '$lib/types/types';
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ route, params, url, cookies, request }:

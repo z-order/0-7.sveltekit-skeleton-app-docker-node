@@ -1,16 +1,36 @@
 <script lang="ts">
   import { AppRail, AppRailTile } from '@skeletonlabs/skeleton';
   import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
-  import { goto } from '$app/navigation';
+  import IconRobot from '$assets/icon/robot.svelte';
   import { menuNavLinks, type MenuNavLinks } from '$data/menu-nav-links';
   import { writable, type Writable } from 'svelte/store';
-  import IconRobot from '$assets/icon/robot.svelte';
+  import { goto } from '$app/navigation';
 
-  let currentTile: number = 0;
-  const storeValue: Writable<number> = writable(0);
-  let filteredMenuNavLinks: MenuNavLinks;
-  $: {
-    filteredMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['api'].includes(linkSet.id));
+  export let currentTile: number = 0;
+  let storedTile: Writable<number> = writable(-1);
+  let currentList: number = 999; // not selected
+  let selectedMenuNavLinks: MenuNavLinks | undefined = undefined;
+
+  $: if (currentTile !== $storedTile) {
+    storedTile.set(currentTile);
+    // get the menu set by the current tile
+    switch (currentTile) {
+      case 0: // Just Off
+        selectedMenuNavLinks = undefined;
+        break;
+      case 1:
+        selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['sveltekit'].includes(linkSet.id));
+        break;
+      case 2:
+        selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['menu-set-1'].includes(linkSet.id));
+        break;
+      case 3:
+        selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['menu-set-...'].includes(linkSet.id));
+        break;
+      default:
+        selectedMenuNavLinks = undefined;
+        break;
+    }
   }
 </script>
 
@@ -25,43 +45,46 @@
 </nav>
 -->
 
-<main>
+<main id="main">
   <!-- Hidden below Tailwind's large breakpoint -->
-  <div id="div-sidebar-left" class="hidden lg:block">
-    <AppRail>
-      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-1" value={'/page1'}>
+  <div id="apprail" class="hidden">
+    <AppRail id="apprail">
+      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-1" value={0}>
+        <span class="grid justify-items-center"><IconRobot /></span>
+        <span>Hidden</span>
+      </AppRailTile>
+      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-2" value={1}>
+        <span class="grid justify-items-center"><IconRobot /></span>
+        <span>Samples</span>
+      </AppRailTile>
+      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-3" value={2}>
         <span class="grid justify-items-center"><IconRobot /></span>
         <span>APIs v1</span>
       </AppRailTile>
-      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-2" value={'/page2'}>
+      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-4" value={3}>
         <span class="grid justify-items-center"><IconRobot /></span>
         <span>APIs v2</span>
       </AppRailTile>
-      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-3" value={'/page3'}>
+      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-5" value={4}>
         <span class="grid justify-items-center"><IconRobot /></span>
         <span>APIs v3</span>
       </AppRailTile>
-      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-4" value={'/page4'}>
+      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-6" value={5}>
         <span class="grid justify-items-center"><IconRobot /></span>
         <span>APIs v4</span>
       </AppRailTile>
-      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-5" value={'/page5'}>
-        <span class="grid justify-items-center"><IconRobot /></span>
-        <span>APIs v5</span>
-      </AppRailTile>
-      <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-6" value={'/page6'}>
-        <span class="grid justify-items-center"><IconRobot /></span>
-        <span>APIs v6</span>
-      </AppRailTile>
     </AppRail>
+  </div>
 
+  {#if selectedMenuNavLinks !== undefined && selectedMenuNavLinks.length > 0}
     <ListBox rounded="rounded-md">
-      {#each filteredMenuNavLinks as { id, title, list }}
-        {#each list as { href, label, keywords }}
+      {#each selectedMenuNavLinks as { id, title, list } (id)}
+        {#each list as { id, href, label, keywords }, index (id)}
+          <!-- <ListBoxItem> component of Skeleton has bugs double nested #each block, so just use inside one block -->
           <ListBoxItem
-            bind:group={id}
+            bind:group={currentList}
             name={label}
-            value={label}
+            value={index}
             on:click={(e) => {
               goto(href);
             }}>{label}</ListBoxItem
@@ -69,24 +92,32 @@
         {/each}
       {/each}
     </ListBox>
-  </div>
+  {/if}
+  <!-- </div> -->
 </main>
 
 <style lang="postcss">
+  main {
+    @apply h-[100%] flex flex-row items-start justify-start;
+    padding: 0.1em 0.1em;
+  }
+  #apprail {
+    @apply w-[80px] flex flex-col items-start justify-start;
+  }
   /*
-      span { display: flex; }
-      #top-menu-bar {
-          display: flex;
-          width: 100%;
-          justify-content: space-between;
-          padding: 0.2em 1em;
-      }
-    */
-  #div-sidebar-left {
+  #sample-css-1 {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      padding: 0.2em 1em;
+  }
+  #sample-css-2 {
     display: flex;
+    flex-direction: row;
     min-width: 240px;
     width: 100%;
     justify-content: flex-start;
     padding: 0.2em 0.1em;
   }
+  */
 </style>

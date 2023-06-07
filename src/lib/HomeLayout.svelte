@@ -22,9 +22,10 @@
   import { Drawer, drawerStore } from '@skeletonlabs/skeleton';
   import Navigation from '$lib/navi/Navigation.svelte';
   import ButtonHamburgerMenu from '$lib/componets/ButtonHamburgerMenu.svelte';
+  import { goto, invalidateAll } from '$app/navigation';
 
   function drawerOpenLeft(): void {
-    drawerStore.open({ id: 'drawer-left', position: 'left', width: 'w-[280px] md:w-[360px]' });
+    drawerStore.open({ id: 'drawer-left', position: 'left', width: 'w-[280px] md:w-[460px]' });
   }
 
   function drawerOpenRight(): void {
@@ -34,13 +35,18 @@
   function drawerClose(): void {
     drawerStore.close();
   }
+
+  function moveToHome(): void {
+    document.location.href = '/';
+  }
 </script>
 
 <Drawer>
   {#if $drawerStore.id === 'drawer-left'}
     <h2 class="p-4">Navigation</h2>
     <hr />
-    <Navigation />
+    <!-- {1} : sveltekit menu -->
+    <Navigation currentTile={1} />
   {:else if $drawerStore.id === 'drawer-right'}
     <h2 class="p-4">Drawer Right</h2>
     <hr />
@@ -57,7 +63,10 @@
       <svelte:fragment slot="lead">
         <div class="flex items-center">
           <ButtonHamburgerMenu on:click={drawerOpenLeft} />
-          <strong class="text-xl uppercase">MyApp</strong> &nbsp; &nbsp; API Sandbox
+          <strong class="text-xl uppercase">
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <div on:click={moveToHome}>MyApp</div>
+          </strong> &nbsp; &nbsp; API Sandbox
         </div>
       </svelte:fragment>
       <svelte:fragment slot="trail">

@@ -1,5 +1,5 @@
 import * as _$c from '$config/config.global';
-import type { PromiseSMD } from '$lib/types';
+import type { PromiseSMD } from '$lib/types/types';
 
 enum LogLevel {
   _DEBUG = 1,

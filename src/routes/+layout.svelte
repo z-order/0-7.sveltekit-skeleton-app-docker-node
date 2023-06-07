@@ -3,7 +3,7 @@
   export let data: any;
   import { page } from '$app/stores';
   import { _$logger } from '$lib/utils/logger';
-  import HomeLayout from '$lib/HomeLayout.svelte';
+  import HomeLayout from '../lib/HomeLayout.svelte';
   import LoginPage from '$lib/login/LoginPage.svelte';
 
   _$logger.debug.TraceLayoutAndPage('/+layout.svelte', $page.route.id, data);

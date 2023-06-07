@@ -1,6 +1,6 @@
 import { v4 as uuidv4, v5 as uuidv5 } from 'uuid';
 import { hashPassword, verifyPassword } from '$lib/utils/crypto'
-import type { PromiseSMD, UserAuthDB, UserSessionData } from '$lib/types';
+import type { PromiseSMD, UserAuthDB, UserSessionData } from '$lib/types/types';
 import { _$logger } from '$lib/utils/logger';
 import * as _$c from '$config/config.global';
 
