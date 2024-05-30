@@ -19,12 +19,18 @@
         selectedMenuNavLinks = undefined;
         break;
       case 1:
-        selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['sveltekit'].includes(linkSet.id));
+        selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['svelte'].includes(linkSet.id));
         break;
       case 2:
-        selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['menu-set-1'].includes(linkSet.id));
+        selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['svelte+'].includes(linkSet.id));
         break;
       case 3:
+        selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['sveltekit'].includes(linkSet.id));
+        break;
+      case 4:
+        selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['menu-set-1'].includes(linkSet.id));
+        break;
+      case 5:
         selectedMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['menu-set-...'].includes(linkSet.id));
         break;
       default:
@@ -55,23 +61,23 @@
       </AppRailTile>
       <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-2" value={1}>
         <span class="grid justify-items-center"><IconRobot /></span>
-        <span>Samples</span>
+        <span>Svelte</span>
       </AppRailTile>
       <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-3" value={2}>
         <span class="grid justify-items-center"><IconRobot /></span>
-        <span>APIs v1</span>
+        <span>Svelte+</span>
       </AppRailTile>
       <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-4" value={3}>
         <span class="grid justify-items-center"><IconRobot /></span>
-        <span>APIs v2</span>
+        <span>SvelteKit</span>
       </AppRailTile>
       <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-5" value={4}>
         <span class="grid justify-items-center"><IconRobot /></span>
-        <span>APIs v3</span>
+        <span>...</span>
       </AppRailTile>
       <AppRailTile id="AppRailTile" bind:group={currentTile} name="tile-6" value={5}>
         <span class="grid justify-items-center"><IconRobot /></span>
-        <span>APIs v4</span>
+        <span>...</span>
       </AppRailTile>
     </AppRail>
   </div>
@@ -104,7 +110,7 @@
   #apprail {
     @apply w-[80px] flex flex-col items-start justify-start;
   }
-  /*
+  /* sample css for reference
   #sample-css-1 {
       display: flex;
       width: 100%;

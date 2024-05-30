@@ -1,11 +1,11 @@
 import { v4 as uuidv4, v5 as uuidv5 } from 'uuid';
-import { hashPassword, verifyPassword } from '$lib/utils/crypto'
+import { hashPassword, verifyPassword } from '$lib/utils/crypto';
 import type { PromiseSMD, UserAuthDB, UserSessionData } from '$lib/types/types';
 import { _$logger } from '$lib/utils/logger';
 import * as _$c from '$config/config.global';
 
 const UUID_NAMESPACE = uuidv4();
-export let userAuthDB: UserAuthDB[] = await initializeUserAuthDB();
+export const userAuthDB: UserAuthDB[] = await initializeUserAuthDB();
 
 async function initializeUserAuthDB() {
   return [
@@ -13,7 +13,7 @@ async function initializeUserAuthDB() {
       uuid: uuidv5(uuidv4(), UUID_NAMESPACE),
       id: '1001',
       password: await hashPassword('1001'),
-      name: 'John Doe',
+      name: 'John Doe [1001]',
       email: '1001@test.com',
       role: 'user',
       token: '',
@@ -22,7 +22,7 @@ async function initializeUserAuthDB() {
       uuid: uuidv5(uuidv4(), UUID_NAMESPACE),
       id: '1002',
       password: await hashPassword('1002'),
-      name: 'Jane Doe',
+      name: 'Jane Doe [1002]',
       email: '1002@test.com',
       role: 'user',
       token: '',
@@ -34,17 +34,16 @@ export const userSessionData: UserSessionData[] = [];
 
 /**
  * Get user authentication data by user id.
- * 
+ *
  * @param id The id of the user.
  * @param password  The password of the user.
  * @return The user authentication data.
  */
 export async function getUserAuth(id: string, password: string): Promise<PromiseSMD | undefined> {
-
   let getUserAuth = new Promise<PromiseSMD>((resolve) => resolve({ status: 401, message: 'Unauthorized', data: undefined }));
   try {
     for (let i = 0; i < userAuthDB.length; i++) {
-      let userAuth = userAuthDB[i];
+      const userAuth = userAuthDB[i];
       if (userAuth.id === id) {
         getUserAuth = verifyPassword(password, userAuth.password).then((result) => {
           if (result) {
@@ -68,7 +67,7 @@ export async function getUserAuth(id: string, password: string): Promise<Promise
 
 /**
  * Get user session data by session id.
- * 
+ *
  * @param sessionid The session id of the user.
  * @return The user session data.
  */
@@ -83,13 +82,13 @@ export async function getUserSession(sessionid: string): Promise<UserSessionData
 
 /**
  * Update user session data by session id.
- * 
+ *
  * @param sessionid The session id of the user.
  * @return The updated user session data.
  */
 export async function createUserSession(uuidUser: string): Promise<UserSessionData> {
-  let sessionId: string = generateSessionId(uuidUser);
-  let userSessionData: UserSessionData = {
+  const sessionId: string = generateSessionId(uuidUser);
+  const userSessionData: UserSessionData = {
     uuid: uuidUser,
     sessionid: sessionId,
     token: generateToken(uuidUser),
@@ -105,7 +104,7 @@ export async function createUserSession(uuidUser: string): Promise<UserSessionDa
         secure: _$c.COOKIE_SECURE,
         maxAge: _$c.COOKIE_MAX_AGE,
       },
-    }
+    },
   };
 
   return userSessionData;
@@ -113,7 +112,7 @@ export async function createUserSession(uuidUser: string): Promise<UserSessionDa
 
 /**
  * Update user session data by session id.
- * 
+ *
  * @param sessionid The session id of the user.
  * @return The updated user session data.
  */
@@ -129,7 +128,7 @@ export async function updateUserSession(sessionid: string, sessionData: UserSess
 
 /**
  * Add new user session data.
- * 
+ *
  * @param sessionData The new session data.
  * @return The new user session data.
  */
@@ -140,7 +139,7 @@ export async function addUserSession(sessionData: UserSessionData): Promise<User
 
 /**
  * Remove session by session id.
- * 
+ *
  * @param sessionData The session id to be removed.
  * @return An UserSessionData[] array containing the elements that were deleted.
  */
@@ -154,7 +153,7 @@ export async function removeUserSession(sessionid: string): Promise<UserSessionD
 
 /**
  *  Generate a new Token id.
- * 
+ *
  * @param uuid The uuid of the user.
  * @return string The Token id.
  */
@@ -164,7 +163,7 @@ export function generateToken(uuid: string): string {
 
 /**
  *  Generate a new session id.
- * 
+ *
  * @param uuid The uuid of the user.
  * @return string The session id.
  */
@@ -174,7 +173,7 @@ export function generateSessionId(uuid: string): string {
 
 /**
  *  Generate a new cookie value.
- * 
+ *
  * @param userSessionData The user session data.
  * @return {string} The cookie value.
  */
@@ -192,9 +191,9 @@ export function createCookieValue(userSessionData: UserSessionData): string {
 
 // In browswer, there are 3 types of storage:
 //
-// - Cookies : 
+// - Cookies :
 //
-//   [Refs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie, https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies] 
+//   [Refs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie, https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies]
 //
 //   Name: The name of the cookie.
 //   Value: The value of the cookie.
@@ -210,14 +209,14 @@ export function createCookieValue(userSessionData: UserSessionData): string {
 //   - The SameSite attribute controls how cookies are sent in cross-site requests.
 //     It can have three possible values: "Strict", "Lax", or "None".
 //
-//   "Strict": 
+//   "Strict":
 //       When SameSite is set to "Strict", the cookie will only be sent in a first-party context.
 //       This means the cookie will be sent only when the website making the request is the same site as the domain in the cookie.
-//   "Lax": 
+//   "Lax":
 //       When SameSite is set to "Lax" (which is the default value for many browsers), the cookie will be sent in two scenarios:
 //       First-party context: The cookie will be sent in requests originating from the same site as the domain in the cookie.
 //       Safe cross-site context: The cookie will also be sent for top-level navigation (e.g., clicking on a link) from an external site to your site.
-//   "None": 
+//   "None":
 //       When SameSite is set to "None", the cookie will be sent in all contexts, including both first-party and third-party contexts.
 //       This is typically used when you need to allow cross-site sharing of cookies, for example, in authentication or embedding scenarios.
 //
@@ -228,19 +227,19 @@ export function createCookieValue(userSessionData: UserSessionData): string {
 //   Local storage is part of the Web Storage API, and it allows you to store key-value pairs in a web browser.
 //   The data stored in local storage is isolated to the domain, so data saved by one webpage cannot be read or modified by another webpage.
 //
-// - Session Storage : key/value 
+// - Session Storage : key/value
 //   This is another type of web storage that is similar to local storage,
 //   but it maintains a separate storage area for each given session.
 //   The data stored in session storage gets cleared when the page's session ends—that is,
 //   when the page is closed. Like local storage, session storage also allows you to store key-value pairs,
 //   and the data is isolated to the domain.
 //
-// - Note on Local Storage and Session Storage : 
+// - Note on Local Storage and Session Storage :
 //   Local storage and session storage are both web storage objects that allow you to store data on the client-side.
 //   And, you can read and write to Local Storage and Session Storage using the localStorage and sessionStorage objects, respectively.
 //   However, because Svelte and SvelteKit can run on both the client and server, you should make sure to access these objects only in client-side code.
 //   You can use Svelte's onMount function to run code after the component is first rendered and is guaranteed to be running in the browser:
-// 
+//
 //   src/routes/example.svelte
 //   <script>
 //     import { onMount } from 'svelte';

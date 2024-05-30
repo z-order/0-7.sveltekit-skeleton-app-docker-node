@@ -6,23 +6,25 @@
   _$logger.debug.TraceLayoutAndPage('/lib/HomeLayout.svelte', $page.route.id, data);
 
   // Your selected Skeleton theme:
-  import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
+  // import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 
   // This contains the bulk of Skeletons required styles:
   // NOTE: this will be renamed skeleton.css in the v2.x release.
-  import '@skeletonlabs/skeleton/styles/skeleton.css';
+  // import '@skeletonlabs/skeleton/styles/skeleton.css';
 
   // Finally, your application's global stylesheet (sometimes labeled 'app.css')
-  import '../app.postcss';
+  // import '../app.postcss';
 
   // App Shell: Responsive shell for controlling application layout.
   import { LightSwitch } from '@skeletonlabs/skeleton';
   import { AppShell } from '@skeletonlabs/skeleton';
   import { AppBar } from '@skeletonlabs/skeleton';
-  import { Drawer, drawerStore } from '@skeletonlabs/skeleton';
+  import { Drawer, getDrawerStore } from '@skeletonlabs/skeleton';
   import Navigation from '$lib/navi/Navigation.svelte';
   import ButtonHamburgerMenu from '$lib/componets/ButtonHamburgerMenu.svelte';
   import { goto, invalidateAll } from '$app/navigation';
+
+  const drawerStore = getDrawerStore();
 
   function drawerOpenLeft(): void {
     drawerStore.open({ id: 'drawer-left', position: 'left', width: 'w-[280px] md:w-[460px]' });

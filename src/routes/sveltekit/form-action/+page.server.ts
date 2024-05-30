@@ -20,11 +20,9 @@ export const csr = true;
 
 /** @type {import('./$types').LayoutServerLoad} */
 export async function load(event: any) {
-
   _$logger.debug.TraceServerLoadData(_currentFilePath, event.route.id, null);
 
   return {};
-
 }
 
 /** @type {import('./$types').Actions} */
@@ -37,17 +35,22 @@ export const actions: import('./$types').Actions = {
   },
   */
   // named form action : login
-  login: async ({ cookies, request, url }) => { // login sample codes like below
+  login: async ({ cookies, request, url }) => {
+    // login sample codes like below
     const formData = await request.formData();
     const formDataSerialized = Object.fromEntries(formData);
     _$logger.debug.TraceFormActions(_currentFilePath, 'login', formData);
 
     let missing = false;
-    let missingData = { missingEmail: false, missingPassword: false };
+    const missingData = { missingEmail: false, missingPassword: false };
     const email = formData.get('email');
     const password = formData.get('password');
-    if (!email) { missingData.missingEmail = true; }
-    if (!password) { missingData.missingPassword = true; }
+    if (!email) {
+      missingData.missingEmail = true;
+    }
+    if (!password) {
+      missingData.missingPassword = true;
+    }
 
     Object.entries(missingData).forEach(([key, value]) => value && (missing = true));
     if (missing) {
@@ -60,10 +63,12 @@ export const actions: import('./$types').Actions = {
         setTimeout(() => {
           resolve('User0001');
         }, 1000);
-      })
+      });
     })(email as string);
 
-    if (!user) { return fail(401, { incorrect: true, message: 'Unauthorized' }); }
+    if (!user) {
+      return fail(401, { incorrect: true, message: 'Unauthorized' });
+    }
 
     // A sample code of getting session id form DB
     const newSessionId = await (async function createSessionFromDB(user: string) {
@@ -71,10 +76,12 @@ export const actions: import('./$types').Actions = {
         setTimeout(() => {
           resolve(`${user}'s session-id is here ...`);
         }, 1000);
-      })
+      });
     })(user as string);
 
-    if (!newSessionId) { return fail(403, { incorrect: true, message: 'Forbidden' }); }
+    if (!newSessionId) {
+      return fail(403, { incorrect: true, message: 'Forbidden' });
+    }
 
     // TODO: set the session id to the cookie and so on here.
     // ...
@@ -96,5 +103,5 @@ export const actions: import('./$types').Actions = {
   // named form actions : reset
   reset: async ({ cookies, request }) => {
     // nothing to do means reset all the form data, but only use with <form use:enhance> for not to refresh the page.
-  }
+  },
 };

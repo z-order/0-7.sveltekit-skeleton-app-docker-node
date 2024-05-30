@@ -23,5 +23,8 @@ RUN cp ./src/entry.server.ts ./entry.server.js
 # Expose port 3000
 EXPOSE 3000
 
+# Set environment variables: NODE_ENV=development or production
+ENV NODE_ENV=development
+
 # Run the app
 CMD ["node", "-r", "dotenv/config", "./entry.server.js"]

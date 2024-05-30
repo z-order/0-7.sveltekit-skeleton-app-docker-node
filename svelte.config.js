@@ -1,62 +1,26 @@
 import preprocess from 'svelte-preprocess';
 /* import adapter from '@sveltejs/adapter-auto'; // default adapter  */
 import adapter from '@sveltejs/adapter-node';
-import { vitePreprocess } from '@sveltejs/kit/vite';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import path from 'path';
-
-const warnIgnores = {
-  'css-unused-selector': {
-    capture: /.*"(.*)"$/,
-    ignore: [
-      /^\.p\d+/,
-      /^\.sm\d+/,
-      /^\.md\d+/,
-      /^\.lg\d+/,
-      /^\.xg\d+/,
-      /^\.all\d+/,
-      /^\.row(::after)?/
-    ]
-  }
-};
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  onwarn: (warning, handler) => {
-    const { code, frame, filename } = warning;
-    if (code === "css-unused-selector")
-      return;
-    handler(warning);
-  },
-  /*
-  onwarn: (warning, handler) => {
-    const { message, code } = warning;
-    const patterns = warnIgnores[code];
-    if (patterns != undefined) {
-      // Find the meat.
-      const meat = message.match(patterns.capture);
-      if (meat != null) {
-        for (var i = 0; i < patterns.ignore.length; i++) {
-          if (meat[1].match(patterns.ignore[i]) != null) {
-            return;
-          }
-        }
-      }
-    }
-  },
-  */
-
+  extensions: ['.svelte'],
+  compilerOptions: {},
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
   preprocess: [
-    vitePreprocess(),
+    vitePreprocess({}),
     preprocess({
       defaults: {
-        style: 'scss'
+        style: 'postcss', // 'scss' or 'postcss'/'pcss'
       },
       postcss: true,
       scss: {
-        prependData: `@import 'src/scss/global.scss';`
-      }
+        // If you want to prepend data to all of your style files, you can do so here.
+        // prependData: `@import 'src/scss/global.scss';`
+      },
     }),
   ],
   kit: {
@@ -66,19 +30,49 @@ const config = {
     // adapter: adapter(), // default adapter
     adapter: adapter({
       // default options are shown
-      out: 'build',          // The directory to build the server to. It defaults to build
-      precompress: false,    // Enables precompressing using gzip and brotli for assets and prerendered pages. It defaults to false
+      out: 'build', // The directory to build the server to. It defaults to build
+      precompress: false, // Enables precompressing using gzip and brotli for assets and prerendered pages. It defaults to false
       envPrefix: '',
-      polyfill: true
+      polyfill: true,
     }),
     alias: {
-      $lib: path.resolve('./src/lib'),
-      $data: path.resolve('./src/data'),
-      $config: path.resolve('./src/config'),
-      $assets: path.resolve('./src/assets'),
-    }
+      $ui: path.resolve('./src/ui'), // for layouts, components, icons, etc.
+      $lib: path.resolve('./src/lib'), // for utility functions, helpers, etc.
+      $data: path.resolve('./src/data'), // for data, like json ojects, json files, etc.
+      $config: path.resolve('./src/config'), // for global configuration
+      $assets: path.resolve('./src/assets'), // for images, fonts, icons, etc.
+      $stores: path.resolve('./src/stores'), // svetle-stores
+    },
   },
-
+  onwarn: (warning, handler) => {
+    //
+    // refers to:
+    // https://github.dev/sveltejs/vite-plugin-svelte/
+    // https://github.dev/sveltejs/vite-plugin-svelte/blob/main/packages/vite-plugin-svelte/src/index.ts
+    //
+    // And more details, go check out sveltekit definition source code below:
+    // import { sveltekit } from '@sveltejs/kit/vite';
+    //
+    // don't warn on 'a11y-*' messages
+    if (warning.code.slice(0, 4).toLowerCase() === 'a11y') {
+      // a11y-* roles are not valid
+      // console.log('warning.code', warning.code, warning.message);
+      return;
+    }
+    // don't warn on 'css-unused-selector' messages
+    if (warning.code === 'css-unused-selector') {
+      // console.log('warning.code', warning.code, warning.message);
+      return;
+    }
+    // let Rollup handle all other warnings normally
+    handler(warning);
+  },
+  // plugin options
+  vitePlugin: {
+    exclude: [],
+    // experimental options
+    experimental: {},
+  },
 };
 
 export default config;

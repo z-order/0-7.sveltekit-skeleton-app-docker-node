@@ -5,9 +5,8 @@ import * as _$auth from '$lib/auth/authorization';
 import type { PromiseSMD, UserSessionData, APILoginReq, APILoginResp } from '$lib/types/types';
 
 /** @type {import('./$types').RequestHandler} */
-export async function POST({ route, params, url, cookies, request }:
-  { route: any, params: any, url: any, cookies: any, request: any }) {
-  let __APIAction: APIAction = 'POST';
+export async function POST({ route, params, url, cookies, request }: { route: any; params: any; url: any; cookies: any; request: any }) {
+  const __APIAction: APIAction = 'POST';
   /* curl for GET method
   curl -i -X POST http://localhost:3000/api/login
   curl -i -d '{"id":"1001", "password":"epl@@1001"}' -X POST http://localhost:5173/api/login
@@ -28,7 +27,7 @@ export async function POST({ route, params, url, cookies, request }:
     throw error(400, 'Bad Request');
   }
 
-  let userAuthData: PromiseSMD | undefined = await _$auth.getUserAuth(apiReqData.id, apiReqData.password);
+  const userAuthData: PromiseSMD | undefined = await _$auth.getUserAuth(apiReqData.id, apiReqData.password);
 
   if (userAuthData == undefined) {
     throw error(401, 'Unauthorized');
@@ -41,21 +40,21 @@ export async function POST({ route, params, url, cookies, request }:
     throw error(500, 'Internal Server Error');
   }
 
-  let userSessionData: UserSessionData = await _$auth.createUserSession(userAuthData.data.uuid);
-  let cookieValue = _$auth.createCookieValue(userSessionData);
+  const userSessionData: UserSessionData = await _$auth.createUserSession(userAuthData.data.uuid);
+  const cookieValue = _$auth.createCookieValue(userSessionData);
   _$auth.addUserSession(userSessionData);
 
   _$logger.info.TraceAPIAction(route.id, __APIAction, 'C--S', 'userSessionData', JSON.stringify(userSessionData));
   _$logger.debug.TraceAPIAction(route.id, __APIAction, 'C--S', 'cookieValue', cookieValue);
 
-  let resData: APILoginResp = {
+  const resData: APILoginResp = {
     uuid: userAuthData.data.uuid,
     id: userAuthData.data.id,
     name: userAuthData.data.name,
     email: userAuthData.data.email,
   };
 
-  let res = new Response(JSON.stringify(resData), { headers: { 'set-cookie': cookieValue } });
+  const res = new Response(JSON.stringify(resData), { headers: { 'set-cookie': cookieValue } });
   _$logger.info.TraceAPIAction(route.id, __APIAction, 'C<-S', res.status, res.statusText, resData);
   return res;
 }

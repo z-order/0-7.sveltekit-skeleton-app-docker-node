@@ -1,12 +1,53 @@
-/* Write your global styles here, in PostCSS syntax */
-/* @tailwind base; */  /* comment for skeleton framework */ 
-/* @tailwind components; */  /* comment for skeleton framework */ 
-/* @tailwind utilities; */  /* comment for skeleton framework */ 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
 
-html,body {
+html,
+body {
   @apply h-full overflow-hidden;
 }
 
-button {
-  @apply btn variant-filled rounded-md;
+body {
+  background: rgb(255, 255, 255);
+}
+.dark body {
+  background: rgb(31, 39, 59); /* @apply bg-[#1f273b] doesn't work, only rgb() works */
+}
+
+/* modern theme */
+@font-face {
+  font-family: 'Quicksand';
+  src: url('/fonts/Quicksand.ttf');
+  font-display: swap;
+}
+/* rocket theme */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/SpaceGrotesk.ttf');
+  font-display: swap;
+}
+/* gold-nouveau theme */
+@font-face {
+  font-family: 'Quicksand';
+  src: url('/fonts/Quicksand.ttf');
+  font-display: swap;
+}
+/* vintage theme */
+@font-face {
+  font-family: 'Abril Fatface';
+  src: url('/fonts/AbrilFatface.ttf');
+  font-display: swap;
+}
+/* seafoam theme */
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/PlayfairDisplay-Italic.ttf');
+  font-display: swap;
+}
+
+/* NOTE: set your target theme name (ex: skeleton, wintry, modern, etc) */
+:root [data-theme='skeleton'] {
+  --theme-rounded-base: 20px;
+  --theme-rounded-container: 4px;
 }

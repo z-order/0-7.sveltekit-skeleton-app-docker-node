@@ -6,16 +6,17 @@
   import { page } from '$app/stores';
   import { enhance } from '$app/forms';
   import { _$logger } from '$lib/utils/logger';
+  import { onMount } from 'svelte';
+  import type { APILoginData } from '$lib/types/types';
 
-  _$logger.debug.TraceLayoutAndPage(
-    '/sveltekit/account/+page.svelte',
-    $page.route.id,
-    data,
-    '=> form',
-    form /* This form variable is equivalent to $page.from */,
-    '=> $page.status',
-    $page.status,
-  );
+  let userName: string = '';
+  onMount(() => {
+    const userLoginDataStr = localStorage.getItem('userLoginData');
+    const userLoginData: APILoginData = userLoginDataStr ? JSON.parse(userLoginDataStr) : '';
+    userName = userLoginData.name;
+  });
+
+  _$logger.debug.TraceLayoutAndPage('/sveltekit/logout/+page.svelte', $page.route.id, data, '=> form', form /* This form variable is equivalent to $page.from */, '=> $page.status', $page.status);
 
   // If the form was successfully submitted, destroy cookie on the browser-side as well to ensure security options
   if (form?.success) {
@@ -31,8 +32,8 @@
   <span>
     <!-- use:enhance will emulate the browser-native behaviour, just without the full-page reloads -->
     <form method="POST" action="?/logout" use:enhance>
-      <p>User: {data.user.name}</p>
-      <button>Logout</button>
+      <p>User: {userName}</p>
+      <button class="btn variant-filled">Logout</button>
     </form>
     <!-- if the form was successfully submitted, maybe below codes are not showed as the server reloads -->
     {#if form?.success}
@@ -54,6 +55,6 @@
     @apply flex flex-col gap-8 justify-center items-center space-x-1;
   }
   button {
-    @apply flex w-[240px] rounded-md;
+    @apply flex w-[200px] rounded-md;
   }
 </style>

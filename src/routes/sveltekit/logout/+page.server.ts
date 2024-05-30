@@ -2,7 +2,7 @@
 // Refs: https://kit.svelte.dev/docs/form-actions#loading-data
 //
 // Note: set _currentFilePath to the current file path for TraceServerLoadData() parameter.
-const _currentFilePath = '/sveltekit/account/+page.server.ts';
+const _currentFilePath = '/sveltekit/logout/+page.server.ts';
 //
 import { _$logger } from '$lib/utils/logger';
 import { redirect } from '@sveltejs/kit';
@@ -15,7 +15,7 @@ export const csr = true;
 export function load(event: any) {
   _$logger.debug.TraceServerLoadData(_currentFilePath, event.route.id, null);
   return {
-    user: event.locals.user
+    user: event.locals.user,
   };
 }
 
@@ -45,5 +45,5 @@ export const actions = {
     event.locals.user = null;
 
     return { success: true, sessionid };
-  }
-}
+  },
+};

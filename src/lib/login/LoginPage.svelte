@@ -8,6 +8,7 @@
   let apiReqData = { id: '', password: '' };
 
   async function Login() {
+    console.debug(`Login: ${JSON.stringify(apiReqData)}`);
     const response = await fetch('/api/login', {
       method: 'POST',
       headers: {
@@ -17,10 +18,13 @@
     });
 
     // debug log
-    console.debug(`${response.status} ${response.statusText}`);
+    const respData = await response.json();
+    console.debug(`status: ${response.status} statusText: ${response.statusText} data: ${JSON.stringify(respData)}`);
+    alert(`status: ${response.status} statusText: ${response.statusText} data: ${JSON.stringify(respData)}`);
 
     switch (response.status) {
       case 200:
+        localStorage.setItem('userLoginData', JSON.stringify(respData));
         goto('/');
       default:
         window.document.location.reload();
@@ -34,7 +38,7 @@
   <form>
     <input class="input" type="text" placeholder="ID" bind:value={apiReqData.id} />
     <input class="input" type="password" placeholder="Password" bind:value={apiReqData.password} />
-    <button on:click={Login}>Login</button>
+    <button class="btn variant-filled" on:click={Login}>login</button>
   </form>
 </main>
 

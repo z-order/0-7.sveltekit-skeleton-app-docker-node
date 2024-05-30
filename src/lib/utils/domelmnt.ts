@@ -1,16 +1,19 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck @ts-ignore
 function _setStyleXYFull(containerClass: string, containerIndex: number, targetClass: string, targetIndex: number, padding: number) {
+  // eslint-disable-next-line no-unused-labels
   $: {
     const targetElement = document.getElementsByClassName(targetClass)[targetIndex];
     const containerElement = document.getElementsByClassName(containerClass)[containerIndex];
-    let containerElementX = containerElement.clientLeft;
-    let containerElementY = containerElement.clientTop;
-    let containerElementW = containerElement.clientWidth;
-    let containerElementH = containerElement.clientHeight;
-    let containerElementOffsetX = containerElement.offsetLeft;
-    let containerElementOffsetY = containerElement.offsetTop;
-    let containerElementOffsetW = containerElement.offsetWidth;
-    let containerElementOffsetH = containerElement.offsetHeight;
+    const containerElementX = containerElement.clientLeft;
+    const containerElementY = containerElement.clientTop;
+    const containerElementW = containerElement.clientWidth;
+    const containerElementH = containerElement.clientHeight;
+    const containerElementOffsetX = containerElement.offsetLeft;
+    const containerElementOffsetY = containerElement.offsetTop;
+    const containerElementOffsetW = containerElement.offsetWidth;
+    const containerElementOffsetH = containerElement.offsetHeight;
     targetElement.style.position = 'absolute';
     targetElement.style.left = `${containerElementOffsetX - padding}px`;
     targetElement.style.top = `${containerElementOffsetY - padding}px`;
@@ -26,6 +29,6 @@ function _setStyleElementVisible(targetClass: string, targetIndex: number, visib
 }
 
 export namespace _$domElmnt {
-  export let setStyleXYFull = _setStyleXYFull;
-  export let setStyleElementVisible = _setStyleElementVisible;
+  export const setStyleXYFull = _setStyleXYFull;
+  export const setStyleElementVisible = _setStyleElementVisible;
 }

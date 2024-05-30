@@ -21,7 +21,7 @@
     <input class="input" type="number" placeholder="A value" bind:value={a} /> +
     <input class="input" type="number" placeholder="B value" bind:value={b} /> =
     <span>{total}</span>
-    <button on:click={add}>Calculate</button>
+    <button class="btn variant-filled" on:click={add}>Calculate</button>
   </form>
 </main>
 

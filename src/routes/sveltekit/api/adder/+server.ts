@@ -13,8 +13,8 @@ import * as _$c from '$config/config.global';
 */
 
 /** @type {import('./$types').RequestHandler} */
-export async function POST({ route, url, request }: { route: any, url: any, request: any }) {
-  let __APIAction: APIAction = 'POST';
+export async function POST({ route, url, request }: { route: any; url: any; request: any }) {
+  const __APIAction: APIAction = 'POST';
   /* curl for POST method
   curl -i -d "a=1&b=2" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://localhost:3000/sveltekit/api/adder
   curl -i -d '{"a":"1", "b":"2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/sveltekit/api/adder
@@ -29,26 +29,26 @@ export async function POST({ route, url, request }: { route: any, url: any, requ
 }
 
 /** @type {import('./$types').RequestHandler} */
-export async function GET({ route, url, request }: { route: any, url: any, request: any }) {
+export async function GET({ route, url, request }: { route: any; url: any; request: any }) {
   throw error(501, 'Not implemented');
 }
 
 /** @type {import('./$types').RequestHandler} */
-export function PATCH({ route, url, request }: { route: any, url: any, request: any }) {
+export function PATCH({ route, url, request }: { route: any; url: any; request: any }) {
   throw error(501, 'Not implemented');
 }
 
 /** @type {import('./$types').RequestHandler} */
-export function PUT({ route, url, request }: { route: any, url: any, request: any }) {
+export function PUT({ route, url, request }: { route: any; url: any; request: any }) {
   throw error(501, 'Not implemented');
 }
 
 /** @type {import('./$types').RequestHandler} */
-export function DELETE({ route, url, request }: { route: any, url: any, request: any }) {
+export function DELETE({ route, url, request }: { route: any; url: any; request: any }) {
   throw error(501, 'Not implemented');
 }
 
 /** @type {import('./$types').RequestHandler} */
-export function OPTIONS({ route, url, request }: { route: any, url: any, request: any }) {
+export function OPTIONS({ route, url, request }: { route: any; url: any; request: any }) {
   throw error(501, 'Not implemented');
 }

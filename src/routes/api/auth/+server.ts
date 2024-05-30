@@ -5,7 +5,7 @@ import * as _$auth from '$lib/auth/authorization';
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST(event: any) {
-  let __APIAction: APIAction = 'POST';
+  const __APIAction: APIAction = 'POST';
   /* curl command line
   curl -i -X POST http://localhost:3000/api/auth
   curl -i -X POST http://localhost:5173/api/auth
@@ -15,20 +15,20 @@ export async function POST(event: any) {
 
   const userSessoinData = await _$auth.getUserSession(userSessionId);
 
-  let resStatus = { status: 404, statusText: 'Not found' };
+  const resStatus = { status: 404, statusText: 'Not found' };
   if (userSessoinData == undefined || userSessoinData == null) {
     _$logger.info.TraceAPIAction(event.route.id, __APIAction, 'C<-S', resStatus);
     return new Response(null, resStatus);
   }
 
-  let res = new Response(JSON.stringify(userSessoinData));
+  const res = new Response(JSON.stringify(userSessoinData));
   _$logger.info.TraceAPIAction(event.route.id, __APIAction, 'C<-S', res.status, res.statusText, userSessionId, JSON.stringify(userSessoinData));
   return res;
 }
 
 /** @type {import('./$types').RequestHandler} */
 export async function DELETE(event: any) {
-  let __APIAction: APIAction = 'DELETE';
+  const __APIAction: APIAction = 'DELETE';
   /* curl command line
   curl -i -H 'x-session-id: ...' -X DELETE http://localhost:3000/api/auth
   curl -i -H 'x-session-id: ...' -X DELETE http://localhost:5173/api/auth
@@ -38,13 +38,13 @@ export async function DELETE(event: any) {
 
   const userSessoinData = await _$auth.removeUserSession(userSessionId);
 
-  let resStatus = { status: 404, statusText: 'Not found' };
+  const resStatus = { status: 404, statusText: 'Not found' };
   if (userSessoinData == undefined || userSessoinData == null) {
     _$logger.info.TraceAPIAction(event.route.id, __APIAction, 'C<-S', resStatus);
     return new Response(null, resStatus);
   }
 
-  let res = new Response();
+  const res = new Response();
   _$logger.info.TraceAPIAction(event.route.id, __APIAction, 'C<-S', res.status, res.statusText, userSessionId);
   return res;
 }

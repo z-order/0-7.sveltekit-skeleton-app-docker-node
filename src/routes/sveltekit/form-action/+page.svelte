@@ -68,8 +68,8 @@
           Password <input name="password" class="input" type="password" placeholder="Password" value={form?.password ?? ''} />
           {#if form?.missingPassword}<p class="error">The password field is required!</p>{/if}
         </label>
-        <button>Login</button>
-        <button formaction="?/register">Register</button>
+        <button class="btn variant-filled">Login</button>
+        <button class="btn variant-filled" formaction="?/register">Register</button>
       </form>
       {#if form?.success}
         <!-- this message is ephemeral; it exists because the page was rendered in
@@ -99,8 +99,8 @@
           Password <input name="password" class="input" type="password" placeholder="Password" value={form?.password ?? ''} />
           {#if form?.missingPassword}<p class="error">The password field is required!</p>{/if}
         </label>
-        <button disabled={postActionWaiting}>Login</button>
-        <button disabled={postActionWaiting} formaction="?/register">Register</button>
+        <button class="btn variant-filled" disabled={postActionWaiting}>Login</button>
+        <button class="btn variant-filled" disabled={postActionWaiting} formaction="?/register">Register</button>
       </form>
       <div class="form-popup">
         {#if postActionWaiting}

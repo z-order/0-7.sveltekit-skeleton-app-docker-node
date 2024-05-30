@@ -16,25 +16,71 @@ export const ssr = true;
 export const csr = true;
 
 /** @type {import('./$types').LayoutServerLoad} */
-export async function load(
-  { route, params, url, fetch, setHeaders, parent, depends, clientAddress, cookies, locals, platform, request }:
-    {
-      route: any, params: any, url: any, fetch: any, setHeaders: any, parent: any, depends: any,
-      clientAddress: any, cookies: any, locals: any, platform: any, request: any
-    }) {
-
+export async function load({
+  route,
+  params,
+  url,
+  fetch,
+  setHeaders,
+  parent,
+  depends,
+  clientAddress,
+  cookies,
+  locals,
+  platform,
+  request,
+}: {
+  route: any;
+  params: any;
+  url: any;
+  fetch: any;
+  setHeaders: any;
+  parent: any;
+  depends: any;
+  clientAddress: any;
+  cookies: any;
+  locals: any;
+  platform: any;
+  request: any;
+}) {
   _$logger.debug.TraceServerLoadData(_currentFilePath, route.id, null);
 
-  _$c.__DEBUG_LOAD_DATA__ALL_PARAMS__ && console.debug('/+layout.server.ts => ', 'route:', route, 'params:', params, 'url:', url, 'fetch:', fetch, 'setHeaders:', setHeaders,
-    'parent:', parent, 'depends:', depends, 'clientAddress:', clientAddress, 'cookies:', cookies,
-    'locals:', locals, 'platform:', platform, 'request:', request);
+  _$c.__DEBUG_LOAD_DATA__ALL_PARAMS__ &&
+    console.debug(
+      '/+layout.server.ts => ',
+      'route:',
+      route,
+      'params:',
+      params,
+      'url:',
+      url,
+      'fetch:',
+      fetch,
+      'setHeaders:',
+      setHeaders,
+      'parent:',
+      parent,
+      'depends:',
+      depends,
+      'clientAddress:',
+      clientAddress,
+      'cookies:',
+      cookies,
+      'locals:',
+      locals,
+      'platform:',
+      platform,
+      'request:',
+      request,
+    );
 
   // If the /api/auth endpoint is intended to be mutative (for example, if it's supposed to log the user in),
   // then it should not be called during prerendering.
   // https://kit.svelte.dev/docs#loading-data
   // https://kit.svelte.dev/docs#prerendering
   // If you want to ignore this issue of error during presendering(SSR is true) then you can set prerender: false in the route's config.
-  if (import.meta.env.SSR) { // import.meta.env.SSR is true during prerendering
+  if (import.meta.env.SSR) {
+    // import.meta.env.SSR is true during prerendering
     // skip fetching in prerendering
   } else {
     // fetch data from an API
@@ -46,13 +92,15 @@ export async function load(
   // If you need to access cookies in the page component, you can pass them as props.
   // return { props: { cookies } };
   //
-  // When setting cookies, be aware of the path property. 
+  // When setting cookies, be aware of the path property.
   // By default, the path of a cookie is the current pathname.
   // If you for example set a cookie at page admin/user, the cookie will only be available within the admin pages by default.
   // In most cases you likely want to set path to '/' to make the cookie available throughout your app.
 
   let userSessionData = undefined; // Get the user session data from the API endpoint
   const sessionid = cookies.get('x-session-id');
+  // In real-world scenarios, you should check the validation of the sessionid and when the sessionid is valid with the user session data,
+  // you can skip the fetching of the user session data from the API endpoint during a few minutes for the better performance.
   if (sessionid) {
     // fetch data from an API
     const res = await fetch(`/api/auth`, {
@@ -73,7 +121,6 @@ export async function load(
       { slug: 'slug-1', title: 'title-1', content: 'content-1' },
       { slug: 'slug-2', title: 'title-2', content: 'content-2' },
       { slug: 'slug-3', title: 'title-3', content: 'content-3' },
-    ]
+    ],
   };
-
 }

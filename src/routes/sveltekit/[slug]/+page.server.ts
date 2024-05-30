@@ -11,9 +11,9 @@ export const ssr = true;
 export const csr = true;
 
 /** @type {import('./$types').PageServerLoad} */
-export function load({ route, params }: { route: any, params: { slug: string; }; }) {
+export function load({ route, params }: { route: any; params: { slug: string } }) {
   let menuItem: any = null;
-  let filteredMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['sveltekit'].includes(linkSet.id)); // id: 'sveltekit'
+  const filteredMenuNavLinks = menuNavLinks.filter((linkSet: any) => ['sveltekit'].includes(linkSet.id)); // id: 'sveltekit'
   filteredMenuNavLinks.forEach((item: MenuNavLink) => {
     menuItem = item.list.find((subItem: NavLink) => subItem.href.replace('/sveltekit/', '') === params.slug);
   });

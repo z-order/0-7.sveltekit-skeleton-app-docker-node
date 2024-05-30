@@ -14,7 +14,7 @@ export interface UserAuthDB {
   email: string;
   role: string;
   token: string;
-};
+}
 
 // User session data for Cookies and headers test
 export interface UserCookies {
@@ -29,7 +29,7 @@ export interface UserCookies {
     secure: boolean; // Indicates whether the cookie should only be sent over a secure connection (HTTPS).
     maxAge: number; // The maximum age (in seconds) of the cookie.
   };
-};
+}
 
 // User session data for Cookies and headers test
 export interface UserSessionData {
@@ -37,13 +37,13 @@ export interface UserSessionData {
   sessionid: string; // sessionid is the key of the user session data (Cookie name)
   token: string;
   cookies: UserCookies;
-};
+}
 
 // API - Login test request data: POST-/api/login
 export interface APILoginReq {
   id: string;
   password: string;
-};
+}
 
 // API - Login test response data: POST-/api/login
 export interface APILoginResp {
@@ -51,4 +51,6 @@ export interface APILoginResp {
   id: string;
   name: string;
   email: string;
-};
+}
+
+export type APILoginData = APILoginResp;

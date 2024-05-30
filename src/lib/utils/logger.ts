@@ -13,16 +13,15 @@ export type APIAction = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'OPTIONS' 
 
 class SecureLogger {
   // Constructor
-  constructor(level: 'debug' | 'trace' | 'info' | 'warn' | 'error') { }
-  public TracePromiseSMD(currentRoutePath: string, data: PromiseSMD | undefined) { }
-  public TraceAPIAction(currentRoutePath: string, apiActoin: APIAction, arrowActoin: 'C->S' | 'C<-S' | 'C--S', ...data: any) { }
-  public TraceServerLoadData(currentFilePath: string, currentRoutePath: string, loadData: any, ...moreData: any) { }
-  public TraceFormActions(currentFilePath: string, formActoin: string, data: any, ...moreData: any) { }
-  public TraceLayoutAndPage(currentFilePath: string, currentRoutePath: string | null, data: any, ...moreData: any) { }
+  constructor(level: 'debug' | 'trace' | 'info' | 'warn' | 'error') {}
+  public TracePromiseSMD(currentRoutePath: string, data: PromiseSMD | undefined) {}
+  public TraceAPIAction(currentRoutePath: string, apiActoin: APIAction, arrowActoin: 'C->S' | 'C<-S' | 'C--S', ...data: any) {}
+  public TraceServerLoadData(currentFilePath: string, currentRoutePath: string, loadData: any, ...moreData: any) {}
+  public TraceFormActions(currentFilePath: string, formActoin: string, data: any, ...moreData: any) {}
+  public TraceLayoutAndPage(currentFilePath: string, currentRoutePath: string | null, data: any, ...moreData: any) {}
 }
 
 class Logger extends SecureLogger {
-
   // Fields (properties)
   private _level: LogLevel = LogLevel._DEBUG;
   private _devMode: boolean = import.meta.env.MODE === 'development'; // true if we are running in development mode
@@ -42,12 +41,24 @@ class Logger extends SecureLogger {
   constructor(private level: 'debug' | 'trace' | 'info' | 'warn' | 'error') {
     super(level);
     switch (level) {
-      case 'debug': this._level = LogLevel._DEBUG; break;
-      case 'trace': this._level = LogLevel._TRACE; break;
-      case 'info': this._level = LogLevel._INFO; break;
-      case 'warn': this._level = LogLevel._WARN; break;
-      case 'error': this._level = LogLevel._ERROR; break;
-      default: this._level = LogLevel._DEBUG; break;
+      case 'debug':
+        this._level = LogLevel._DEBUG;
+        break;
+      case 'trace':
+        this._level = LogLevel._TRACE;
+        break;
+      case 'info':
+        this._level = LogLevel._INFO;
+        break;
+      case 'warn':
+        this._level = LogLevel._WARN;
+        break;
+      case 'error':
+        this._level = LogLevel._ERROR;
+        break;
+      default:
+        this._level = LogLevel._DEBUG;
+        break;
     }
   }
 
@@ -59,11 +70,14 @@ class Logger extends SecureLogger {
   private isPossibleToLog(): boolean {
     let doLog = false;
     // log data if we are running in development mode and following code will be removed in production mode
-    if (this._devMode) { // running in development mode
+    if (this._devMode) {
+      // running in development mode
       doLog = true;
-    } else if (this._isServerSide && this._level >= LogLevel._INFO) { // running in production mode && server side with info/warn/error level
+    } else if (this._isServerSide && this._level >= LogLevel._INFO) {
+      // running in production mode && server side with info/warn/error level
       doLog = true;
-    } else { // running in production mode && client side
+    } else {
+      // running in production mode && client side
       doLog = false;
     }
     return doLog;
@@ -75,16 +89,17 @@ class Logger extends SecureLogger {
    * If log level is error or warn, the terminal color will be applied to red or yellow.
    */
   private displayLog(label: string, title: string, message: string, ...data: any) {
-
     // This code will only be included in the development build or server side production build
-    if (this._isServerSide || this._isClientSide && process.env.NODE_ENV === 'development') {
+    if (this._isServerSide || (this._isClientSide && process.env.NODE_ENV === 'development')) {
       if (this.isPossibleToLog()) {
         let titleWrapper, labelWrapper, messageWrapper;
-        if (this._isClientSide) { // client side, window is defined in the browser
+        if (this._isClientSide) {
+          // client side, window is defined in the browser
           labelWrapper = label;
           titleWrapper = title;
           messageWrapper = message;
-        } else { // server side, window is undefined in the Node.js
+        } else {
+          // server side, window is undefined in the Node.js
           switch (this._level) {
             case LogLevel._WARN:
               labelWrapper = `${this._termCtrlYelow}[${label}]`;
@@ -108,12 +123,24 @@ class Logger extends SecureLogger {
         }
         let logger;
         switch (this._level) {
-          case LogLevel._DEBUG: logger = console.debug; break;
-          case LogLevel._TRACE: logger = console.trace; break;
-          case LogLevel._INFO: logger = console.info; break;
-          case LogLevel._WARN: logger = console.warn; break;
-          case LogLevel._ERROR: logger = console.error; break;
-          default: logger = console.debug; break;
+          case LogLevel._DEBUG:
+            logger = console.debug;
+            break;
+          case LogLevel._TRACE:
+            logger = console.trace;
+            break;
+          case LogLevel._INFO:
+            logger = console.info;
+            break;
+          case LogLevel._WARN:
+            logger = console.warn;
+            break;
+          case LogLevel._ERROR:
+            logger = console.error;
+            break;
+          default:
+            logger = console.debug;
+            break;
         }
         logger(labelWrapper, titleWrapper, messageWrapper, ...data);
       }
@@ -197,7 +224,6 @@ class Logger extends SecureLogger {
   public TraceLayoutAndPage(currentFilePath: string, currentRoutePath: string | null, data: any, ...moreData: any) {
     _$c.__$logger_TraceLayoutAndPage__ && this.displayLog('SVELTE', currentFilePath, `=> route ${currentRoutePath} => data`, data, ...moreData);
   }
-
 } // end of class Logger
 
 let secureDebug = new SecureLogger('debug');
@@ -223,10 +249,11 @@ if (import.meta.env.MODE === 'development') {
   secureError = new Logger('error');
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace _$logger {
-  export let debug = secureDebug;
-  export let trace = secureTrace;
-  export let info = secureInfo;
-  export let warn = secureWarn;
-  export let error = secureError;
+  export const debug = secureDebug;
+  export const trace = secureTrace;
+  export const info = secureInfo;
+  export const warn = secureWarn;
+  export const error = secureError;
 } // end of namespace _$logger

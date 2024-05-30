@@ -37,11 +37,10 @@ export const csr = true;
   It means the client side _randomNumberArray is re-initialized every time you refresh your browser.
 */
 
-let _randomNumberArray: {}[] = [];
+const _randomNumberArray: string[] = [];
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ route, params, fetch, depends }: { route: any, params: any, fetch: any, depends: any }) {
-
+export async function load({ route, params, fetch, depends }: { route: any; params: any; fetch: any; depends: any }) {
   // load reruns when `invalidate('/sveltekit/api/random-number')` is called...
   // ...or when `invalidate('app:random')` is called somewhere else in the app
   depends('app:random-number');
@@ -53,14 +52,14 @@ export async function load({ route, params, fetch, depends }: { route: any, para
 
   if (!randomNumber) throw error(500, 'Internal Server: Failed to fetch /sveltekit/api/random-number');
 
-  if (import.meta.env.SSR) {// This is for the server side rendering.
+  if (import.meta.env.SSR) {
+    // This is for the server side rendering.
 
     _$logger.debug.TraceServerLoadData(_currentFilePath, route.id, '=> SSR', _randomNumberArray);
-
-  } else {// This is for the client side rendering.
+  } else {
+    // This is for the client side rendering.
 
     _$logger.debug.TraceServerLoadData(_currentFilePath, route.id, '=> CSR', _randomNumberArray);
-
   }
 
   return { _randomNumberArray };

@@ -1,13 +1,7 @@
 {
   "extends": "./.svelte-kit/tsconfig.json",
   "compilerOptions": {
-    "preserveValueImports": true,
-    "lib": [
-      "esnext",
-      "DOM",
-      "DOM.Iterable",
-      "WebWorker"
-    ],
+    "lib": ["esnext", "DOM", "DOM.Iterable", "WebWorker"],
     "moduleResolution": "node",
     "module": "esnext",
     "target": "esnext",
@@ -37,11 +31,5 @@
     "tests/**/*.d.ts",
     "tests/**/*.svelte"
   ],
-  "exclude": [
-    "node_modules/**",
-    "./.svelte-kit/[!ambient.d.ts]**",
-    "src/service-worker.js",
-    "src/service-worker.ts",
-    "src/service-worker.d.ts"
-  ]
+  "exclude": ["node_modules/**", "./.svelte-kit/[!ambient.d.ts]**", "src/service-worker.js", "src/service-worker.ts", "src/service-worker.d.ts"]
 }

@@ -1,10 +1,22 @@
-name: my-sveltekit-skeleton-project
+name: my-sveltekit-project
+version: '1.0'
 services:
-  sveltekit:
-    image: sveltekit-skeleton-app-node
+  my-sveltekit-app:
+    image: my-sveltekit-app-node
+    container_name: my-sveltekit-app
+    restart: always
     ports:
       - 3000:3000
     working_dir: /app
-    command: [ node, '-r', 'dotenv/config', './entry.server.js' ]
+    command: [node, '-r', 'dotenv/config', './entry.server.js']
     environment:
-      - MY_ENV_HERE=foo
+      - NODE_ENV=development # or production
+    # - ADDRESS_HEADER=True-Client-IP
+    # - PROTOCOL_HEADER=x-forwarded-proto
+    # - HOST_HEADER=x-forwarded-host
+    # - ORIGIN=https://www.my-domain.com:3000
+    volumes:
+      - /data/cdn:/data/cdn
+      - /tmp/cdn:/tmp/cdn
+    networks:
+      - main-network

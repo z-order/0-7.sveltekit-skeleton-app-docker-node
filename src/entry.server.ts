@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck @ts-ignore
 //
 // Customer server that runs SvelteKit and also adds a route that lives separately from the SvelteKit app.
@@ -5,7 +6,21 @@
 import { handler } from './build/handler.js';
 import express from 'express';
 import { config as dotenv } from 'dotenv';
-dotenv({ path: './.env.production' }); // load .env file
+
+// load .env.* file
+if (process.env.NODE_ENV === 'production') {
+  console.log('loading .env.production for production environment');
+  dotenv({ path: './.env.production' });
+} else if (process.env.NODE_ENV === 'development') {
+  console.log('loading .env.development for development environment');
+  dotenv({ path: './.env.development' });
+} else if (process.env.NODE_ENV === 'local') {
+  console.log('loading .env.local for local environment');
+  dotenv({ path: './.env.local' });
+} else {
+  console.log('loading .env.local for local environment');
+  dotenv({ path: './.env.local' });
+}
 
 const app = express();
 
